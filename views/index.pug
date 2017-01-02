@@ -1,75 +1,28 @@
 extends layout
 
 block customMeta
+  link(rel="stylesheet" href="/css/bootstrap.min.css")
   script(src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.29.0/mapbox-gl.js')
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDlnm-2Urb5Y1OGX-gZ8twZPuJx9tWj5QA')
+  script(src="/js/jquery.min.js")
+  script(src="/js/bootstrap.min.js")
   link(href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.29.0/mapbox-gl.css' rel='stylesheet')
   style.
     body { margin:0; padding:0; }
     #map { position:absolute; top:0; bottom:0; width:100%; }
+    #flyButtonMenu {
+      position:absolute;
+      top:10px;
+      left:10px;
+      width:400px;
+    }
 
 block content
   div(id='map')
-  script.
-    var showNeighborhoods = true;
-    mapboxgl.accessToken = 'pk.eyJ1IjoiamRlYm9pIiwiYSI6ImNpeGRycXVreTAwZ20yemw2cmxta2N1anAifQ.O1DaomQGJpctzx05Vq422w';
-    var map = new mapboxgl.Map({
-        container: 'map', // container id
-        style: 'mapbox://styles/jdeboi/cixf2h3zs004p2qmu71zlh3bi', //hosted style id
-        //style: 'mapbox://styles/mapbox/streets-v9', //stylesheet location
-        center: [-90.106873, 29.957861], // starting position
-        zoom: 12 // starting zoom
-    });
+  script(src='/javascripts/map.js')
 
-    map.on('load', function () {
-      map.addSource('nola_neighborhoods', {
-        'type': 'geojson',
-        'data': 'json/neighborhoods.geojson'
-      });
-      addNeighborhoods();
-    });
-
-    map.on('zoom', function(e) {
-      if (map.getZoom() > 12 && !showNeighborhoods) {
-        //addNeighborhoods();
-        showNeighborhoods = true;
-      }
-      else if (map.getZoom() <= 12 && showNeighborhoods){
-        //map.removeLayer('nola_neighborhoods_lines');
-        //map.removeLayer('nola_neighborhoods_fill');
-        showNeighborhoods = false;
-      }
-    });
-
-    document.getElementById('fly').addEventListener('click', function () {
-      // Fly to a random location by offsetting the point -74.50, 40
-      // by up to 5 degrees.
-      map.flyTo({
-          center: [
-              -74.50 + (Math.random() - 0.5) * 10,
-              40 + (Math.random() - 0.5) * 10]
-      });
-    });
-
-    function addNeighborhoods() {
-      map.addLayer({
-          'id': 'nola_neighborhoods_lines',
-          'type': 'line',
-          'source': 'nola_neighborhoods',
-          'layout': {},
-          'paint': {
-              'line-color': '#100',
-              'line-width': 3,
-              'line-opacity':.2
-          }
-      });
-      map.addLayer({
-          'id': 'nola_neighborhoods_fill',
-          'type': 'fill',
-          'source': 'nola_neighborhoods',
-          'layout': {},
-          'paint': {
-            'fill-opacity': 0,
-            'fill-outline-color':'#A80'
-          }
-      });
-    }
+  div(id='flyButtonMenu')
+    div(class="input-group")
+      input(id="address-input" type="text" class="form-control" placeholder="Search for address...")
+      span(class="input-group-btn")
+        button(class="btn btn-default" type="button" onclick="searchAddress();") Go!
