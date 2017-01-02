@@ -1,11 +1,14 @@
 var showNeighborhoods = true;
 mapboxgl.accessToken = 'pk.eyJ1IjoiamRlYm9pIiwiYSI6ImNpeGRycXVreTAwZ20yemw2cmxta2N1anAifQ.O1DaomQGJpctzx05Vq422w';
+var startingCoords = [-90.106873, 29.957861];
 var map = new mapboxgl.Map({
     container: 'map', // container id
     style: 'mapbox://styles/jdeboi/cixf2h3zs004p2qmu71zlh3bi', //hosted style id
     //style: 'mapbox://styles/mapbox/streets-v9', //stylesheet location
-    center: [-90.106873, 29.957861], // starting position
-    zoom: 12 // starting zoom
+    center: startingCoords, // starting position
+    zoom: 12, // starting zoom
+    minZoom: 11,
+    maxZoom: 17
 });
 
 map.on('load', function () {
@@ -71,3 +74,11 @@ function addNeighborhoods() {
       }
   });
 }
+
+
+$(document).ready(function(){
+    $('#address-input').keypress(function(e){
+      if(e.keyCode==13)
+      $('#addressButton').click();
+    });
+});
