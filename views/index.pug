@@ -30,12 +30,12 @@ block content
 
     map.on('zoom', function(e) {
       if (map.getZoom() > 12 && !showNeighborhoods) {
-        addNeighborhoods();
+        //addNeighborhoods();
         showNeighborhoods = true;
       }
       else if (map.getZoom() <= 12 && showNeighborhoods){
-        map.removeLayer('nola_neighborhoods_lines');
-        map.removeLayer('nola_neighborhoods_fill');
+        //map.removeLayer('nola_neighborhoods_lines');
+        //map.removeLayer('nola_neighborhoods_fill');
         showNeighborhoods = false;
       }
     });
